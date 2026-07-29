@@ -18,9 +18,9 @@ décors et direction artistique encore à compléter.
 
 ## Histoire / scénario
 
-Le joueur incarne **Steevie Wonder** (personnage inspiré du chanteur
-américain aveugle : moustache, couette, lunettes de soleil), parti en
-vacances au Moyen-Orient. Pendant son séjour, l'armée israélienne bombarde
+Le joueur incarne **Steevie W.** (personnage inspiré du chanteur américain
+aveugle : moustache, couette, lunettes de soleil — voir convention de
+nommage ci-dessous), parti en vacances au Moyen-Orient. Pendant son séjour, l'armée israélienne bombarde
 son hôtel et le pays tout entier. Steevie s'en sort indemne — mais c'est le
 K.O. général dans le pays.
 
@@ -31,15 +31,21 @@ chanson qui a le pouvoir de rétablir la paix.
 
 ## Personnages à retrouver (ordre de rencontre)
 
-1. Lionel Richie
-2. Tina Turner
-3. Diana Ross
-4. Billy Joel
-5. Cyndi Lauper
-6. Bruce Springsteen
-7. Ray Charles
-8. Bob Dylan
-9. Michael Jackson
+Convention de nommage in-game : prénom + initiale du nom seulement (ex.
+« Steevie W. », « Michael J. »), jamais le nom complet. Ça aide un peu côté
+distance/parodie, mais ne suffit pas à écarter le droit à l'image si le jeu
+est un jour distribué publiquement (le physique + le contexte restent très
+reconnaissables) — voir la note en haut du fichier.
+
+1. Lionel R.
+2. Tina T.
+3. Diana R.
+4. Billy J.
+5. Cyndi L.
+6. Bruce S.
+7. Ray C.
+8. Bob D.
+9. Michael J.
 
 ## Concept personnages jouables
 
@@ -63,8 +69,20 @@ Du plus faible au plus fort :
 5. Mortel
 
 _(à préciser : à quoi s'applique cette échelle — dégâts subis par le joueur,
-dégâts infligés aux ennemis, ou les deux ; et comment elle se manifeste en
-jeu — barre de vie, effets visuels, etc.)_
+dégâts infligés aux ennemis, ou les deux)_
+
+## Vie / dégâts subis
+
+- Barre de vie **courte** (peu de points de vie au total, pour rester
+  arcade/nerveux plutôt qu'un jeu d'endurance).
+- Le **maximum** de la barre de vie augmente avec l'**expérience** du
+  personnage (rejoint le concept personnages ci-dessus : XP = plus de vie
+  max, en plus d'améliorer la capacité principale).
+- Des **cœurs** ramassables dans les niveaux permettent de récupérer de la
+  vie (probablement point(s) de vie, à préciser combien par cœur).
+- _(à préciser : nombre de cœurs de vie de base, combien l'XP en ajoute par
+  niveau, combien de vie un cœur ramassable rend, et comment l'échelle de
+  dégâts ci-dessus se traduit en points de vie retirés)_
 
 ## Décors / niveaux
 
@@ -80,3 +98,5 @@ _(notes de palette, style, références, une fois le scénario connu)_
 - 2026-07-29 : ajout du scénario principal, de la liste des 9 personnages à
   retrouver, du concept de jeu par personnage (expérience / capacité
   spéciale à charge), et de l'échelle de dégâts en 5 niveaux.
+- 2026-07-29 : convention de nommage in-game (prénom + initiale), et
+  concept de vie (barre courte, max lié à l'XP, cœurs ramassables).
