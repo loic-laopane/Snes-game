@@ -60,7 +60,8 @@ reconnaissables) — voir la note en haut du fichier.
 
 ## Échelle de dégâts
 
-Du plus faible au plus fort :
+Du plus faible au plus fort — utilisée pour les dégâts **infligés** par le
+joueur (voir "Dégâts infligés" ci-dessous) :
 
 1. Faible
 2. Moyen
@@ -68,21 +69,75 @@ Du plus faible au plus fort :
 4. Puissant
 5. Mortel
 
-_(à préciser : à quoi s'applique cette échelle — dégâts subis par le joueur,
-dégâts infligés aux ennemis, ou les deux)_
+## Vie / dégâts subis (système de cœurs)
 
-## Vie / dégâts subis
+Unité de calcul interne : le **demi-cœur** (1 cœur = 2 demi-cœurs), pour
+pouvoir gérer les demi-cœurs proprement en points entiers.
 
-- Barre de vie **courte** (peu de points de vie au total, pour rester
-  arcade/nerveux plutôt qu'un jeu d'endurance).
-- Le **maximum** de la barre de vie augmente avec l'**expérience** du
-  personnage (rejoint le concept personnages ci-dessus : XP = plus de vie
-  max, en plus d'améliorer la capacité principale).
-- Des **cœurs** ramassables dans les niveaux permettent de récupérer de la
-  vie (probablement point(s) de vie, à préciser combien par cœur).
-- _(à préciser : nombre de cœurs de vie de base, combien l'XP en ajoute par
-  niveau, combien de vie un cœur ramassable rend, et comment l'échelle de
-  dégâts ci-dessus se traduit en points de vie retirés)_
+- **Départ** : 3 cœurs (= 6 demi-cœurs).
+- **Montée de niveau** : +1 demi-cœur de vie max tous les 2 niveaux gagnés.
+  `vieMax(niveau) = 6 + floor((niveau - 1) / 2)` demi-cœurs.
+  - Niveau 1 → 3 cœurs, niveau 3 → 3,5 cœurs, niveau 5 → 4 cœurs, niveau 7 →
+    4,5 cœurs, etc.
+- **Ramassables** :
+  - Petit cœur → +1 demi-cœur (remplit un demi-cœur de vie).
+  - Gros cœur → +2 demi-cœurs (remplit un cœur entier).
+  - Disque vinyle → remplit tous les cœurs (vie courante = vie max).
+- _(à préciser : niveau max du jeu, pour borner `vieMax` — ex. si le niveau
+  max est 20, `vieMax` plafonne à 6 + 9 = 15 demi-cœurs = 7,5 cœurs)_
+
+## Dégâts infligés (algorithme de montée en puissance)
+
+Chaque tier de l'échelle de dégâts vaut, **au niveau 1**, un nombre de
+points fixe :
+
+| Tier     | Dégâts (niveau 1) |
+|----------|-------------------|
+| Faible   | 1 |
+| Moyen    | 2 |
+| Fort     | 3 |
+| Puissant | 4 |
+| Mortel   | tue l'ennemi instantanément (sauf boss) |
+
+**Boss** : "Mortel" ne tue pas instantanément un boss ; à la place il
+inflige un nombre de dégâts fixe qui vaut **5 points au niveau 1**, et qui
+augmente avec le niveau (même règle de progression que les autres tiers,
+voir juste en dessous).
+
+**Progression avec le niveau du personnage** — un seul bonus, partagé par
+tous les tiers, pour que la règle reste simple et cohérente :
+
+```
+bonus(niveau) = floor((niveau - 1) / 3)   ; +1 point tous les 3 niveaux
+
+Faible(niveau)   = 1 + bonus(niveau)
+Moyen(niveau)    = 2 + bonus(niveau)
+Fort(niveau)     = 3 + bonus(niveau)
+Puissant(niveau) = 4 + bonus(niveau)
+Mortel_boss(niveau) = 5 + bonus(niveau)
+```
+
+Exemple : au niveau 10, `bonus = floor(9/3) = 3` → Faible inflige 4,
+Moyen 5, Fort 6, Puissant 7, Mortel_boss 8.
+
+Pourquoi cette formule :
+- **Un seul palier de croissance** (tous les 3 niveaux) pour tous les
+  tiers de dégâts → cohérent, simple à câbler en assembleur (un compteur
+  qui s'incrémente tous les 3 level-up, ajouté à une table de 5 valeurs de
+  base), et facile à équilibrer côté ennemis (leurs points de vie peuvent
+  suivre le même palier de progression pour garder le nombre de coups
+  nécessaires à peu près stable d'un bout à l'autre du jeu).
+- **Croissance additive, pas multiplicative** : +1 point tous les 3
+  niveaux reste lent — pas de risque que le joueur devienne surpuissant
+  rapidement, contrairement à un scaling en pourcentage qui s'emballe avec
+  le niveau.
+- **Cadence volontairement différente de la vie** (dégâts : tous les 3
+  niveaux / vie : tous les 2 niveaux) : le personnage devient un peu plus
+  résistant avant de devenir plus puissant, ce qui limite encore le
+  sentiment de toute-puissance trop tôt.
+- _(à préciser : le niveau max du jeu (pour borner `bonus`), et comment
+  les points de vie des ennemis (normaux et boss) progressent au fil du
+  jeu pour rester en face de cette échelle de dégâts)_
 
 ## Décors / niveaux
 
@@ -100,3 +155,7 @@ _(notes de palette, style, références, une fois le scénario connu)_
   spéciale à charge), et de l'échelle de dégâts en 5 niveaux.
 - 2026-07-29 : convention de nommage in-game (prénom + initiale), et
   concept de vie (barre courte, max lié à l'XP, cœurs ramassables).
+- 2026-07-29 : système de vie en demi-cœurs chiffré (3 cœurs de départ,
+  +1 demi-cœur tous les 2 niveaux, valeurs des ramassables), et algorithme
+  de montée en puissance des dégâts infligés (base par tier + bonus
+  partagé tous les 3 niveaux, cas particulier des boss pour "Mortel").
