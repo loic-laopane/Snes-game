@@ -98,8 +98,11 @@ vie max tous les 2 niveaux), juste exprimée dans cette unité plus fine :
     remplissage).
   - Gros cœur → +4 quarts (remplit un cœur entier d'un coup).
   - Disque vinyle → remplit tous les cœurs (vie courante = vie max).
-- _(à préciser : borne exacte de `vieMax` — dépend du niveau max, voir la
-  section dégâts infligés ci-dessous)_
+- **Plafond de vie au niveau 45** : `vieMax` arrête de grimper à partir du
+  niveau 45, même si le personnage continue à farmer jusqu'au niveau 50.
+  `vieMax(niveau) = 12 + 2 * floor((min(niveau, 45) - 1) / 2)` quarts.
+  Au niveau 45 : `12 + 2*22 = 56` quarts = **14 cœurs**, plafond définitif
+  de 45 à 50.
 
 ## Dégâts infligés (algorithme de montée en puissance)
 
@@ -166,7 +169,28 @@ Pourquoi cette formule :
 
 ## Décors / niveaux
 
-_(à compléter — lieux, ambiance, progression entre niveaux)_
+**Structure retenue** : 9 mondes (un par star à retrouver, fixé par le
+scénario), **4 niveaux par monde** = 3 niveaux d'action/plateforme + 1
+niveau boss (l'affrontement pour retrouver la star) → **36 niveaux au
+total**.
+
+Raisonnement pour caler le niveau 30-40 en fin de partie normale (voir
+"Dégâts infligés" pour le niveau max 50 farm-only) : si un niveau normal
+rapporte grosso modo l'équivalent d'1 niveau de personnage, et qu'un boss
+rapporte un peu plus (~1,5-2 niveaux, XP de fin de monde plus généreuse),
+27 niveaux normaux + 9 boss donnent une partie normale qui termine autour
+de niveau 30-40 — la courbe d'XP précise reste à affiner, mais l'ordre de
+grandeur colle.
+
+Point de vigilance : 36 niveaux (chacun avec son propre décor/ennemis/
+layout) représente une grosse quantité de contenu à produire pour un
+projet solo — faisable mais ambitieux. Une alternative plus courte serait
+3 niveaux/monde (27 niveaux au total) avec un peu plus d'XP par niveau
+pour garder le même palier final ; à trancher si le rythme de production
+devient trop lourd.
+
+_(à compléter — lieux, ambiance, thème visuel par monde, progression
+entre niveaux)_
 
 ## Direction artistique
 
@@ -188,3 +212,6 @@ _(notes de palette, style, références, une fois le scénario connu)_
   orange → plein orange → moitié rouge → plein rouge), passage à l'unité
   "quart de cœur" en cohérence, et niveau max fixé à 50 mais volontairement
   hors de portée d'une partie normale (réservé au farm).
+- 2026-07-29 : plafond de vie max au niveau 45 (14 cœurs), et structure
+  retenue de 9 mondes × 4 niveaux (3 action + 1 boss) = 36 niveaux, pour
+  faire atterrir une partie normale autour du niveau 30-40.
