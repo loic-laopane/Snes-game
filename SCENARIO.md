@@ -162,10 +162,56 @@ Pourquoi cette formule :
   niveaux / vie : tous les 2 niveaux) : le personnage devient un peu plus
   résistant avant de devenir plus puissant, ce qui limite encore le
   sentiment de toute-puissance trop tôt.
-- _(à préciser : la courbe d'XP exacte et le nombre de niveaux de jeu par
-  monde, pour que le niveau 50 reste hors de portée d'une partie normale ;
-  et comment les points de vie des ennemis (normaux et boss) progressent au
-  fil du jeu pour rester en face de cette échelle de dégâts)_
+- _(à préciser : comment les points de vie des ennemis (normaux et boss)
+  progressent au fil du jeu pour rester en face de cette échelle de
+  dégâts)_
+
+## Expérience (XP)
+
+Deux sources d'XP, volontairement déséquilibrées pour rendre le farm
+d'ennemis plus intéressant que le simple replay d'un niveau déjà fini :
+
+**1. Tuer un ennemi** — l'XP dépend de sa force (même idée de tiers que les
+dégâts), et augmente légèrement monde après monde pour rester cohérent
+avec des ennemis plus costauds plus tard dans le jeu :
+
+| Tier ennemi   | XP de base (monde 1) |
+|---------------|-----------------------|
+| Faible        | 1 |
+| Moyen         | 2 |
+| Fort          | 4 |
+| Puissant      | 6 |
+| Mortel / boss | 15 |
+
+```
+XP_ennemi(tier, monde) = XP_base(tier) + (monde - 1)   ; +1 XP par tier, par monde
+```
+
+**2. Terminer un niveau** — bonus fixe la première fois, qui **diminue de
+moitié à chaque nouvelle fois où on retermine ce niveau**, avec un plancher
+pour ne jamais tomber à zéro (juste devenir négligeable) :
+
+```
+bonus_base(monde) = 10 + 2 * (monde - 1)      ; monde 1 → 10, monde 9 → 26
+bonus_fin_niveau(n) = max(bonus_base >> n, 2)  ; n = nb de fois déjà terminé (0 = 1ère fois)
+```
+
+Exemple (monde 1, `bonus_base` = 10) : 1ère fois → 10 XP, 2e fois → 5 XP,
+3e fois → 2 XP, puis ça reste à 2 XP (le plancher). Au bout de 2-3 replays,
+tuer quelques ennemis du niveau rapporte clairement plus que le rerun du
+bonus de fin — c'est l'effet recherché.
+
+**Seuils d'XP par niveau de personnage** : plutôt qu'une formule, une
+**table précalculée de 50 valeurs** (XP cumulée nécessaire pour chaque
+niveau, 1 à 50). Avec un plafond de niveau aussi petit, une table tient en
+~100 octets de ROM et surtout se règle à la main après playtest, sans
+avoir à retomber sur une formule mathématique parfaite à l'avance — c'est
+l'approche la plus pratique pour équilibrer un jeu SNES solo.
+
+_(à remplir progressivement une fois qu'on peut tester le combat : valeurs
+exactes de la table de seuils, pour confirmer que 36 niveaux + farm
+raisonnable atterrissent bien autour du niveau 30-40 en jeu normal et 50
+en farmant à fond)_
 
 ## Décors / niveaux
 
@@ -189,8 +235,17 @@ projet solo — faisable mais ambitieux. Une alternative plus courte serait
 pour garder le même palier final ; à trancher si le rythme de production
 devient trop lourd.
 
-_(à compléter — lieux, ambiance, thème visuel par monde, progression
-entre niveaux)_
+On reste sur **9 mondes**, et on les travaillera **un par un** (décor,
+ambiance, ennemis propres à chaque monde) plutôt que de tout spécifier
+d'un coup.
+
+### Monde 1 — Moyen-Orient
+
+_(à compléter — c'est le premier à travailler)_
+
+### Mondes 2 à 9
+
+_(à compléter au fur et à mesure, un par un)_
 
 ## Direction artistique
 
@@ -215,3 +270,7 @@ _(notes de palette, style, références, une fois le scénario connu)_
 - 2026-07-29 : plafond de vie max au niveau 45 (14 cœurs), et structure
   retenue de 9 mondes × 4 niveaux (3 action + 1 boss) = 36 niveaux, pour
   faire atterrir une partie normale autour du niveau 30-40.
+- 2026-07-29 : système d'XP (XP par ennemi tué selon son tier + bonus de
+  fin de niveau qui diminue de moitié à chaque replay, plancher à 2 XP),
+  table de seuils par niveau plutôt qu'une formule, confirmation des 9
+  mondes travaillés un par un (monde 1 : Moyen-Orient, à définir).
